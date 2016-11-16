@@ -1,12 +1,37 @@
 public boolean addWorkingPeriod(String employee, int starttime, int endtime) { ... }
 
 
-Input space:	"starttime" 	in {O, ..., endtime}
-		"endtime" 	in {0, ..., size-1}
+Input space:	"starttime" 	in {MIN_INT, ..., MAX_INT}
+		"endtime" 	in {MIN_INT, ..., MAX_INT}
 		
-Partition #1: starttime > 0
-	Test_part1: input: "x = -1", expected: "False" and schedule is unchanged."
-Parition #2: starttime < 0
-	Test_part2: input: "x = 1", expected: "True and for i between starttime and endtime,
-				    workingEmployees contain a string equal to employee and
-       				    the rest of the schedule is unchanged"
+Partition #1: starttime < 0 (starttime in {MIN_INT, ..., -1}) 
+	Test_part1: input: "x = -10", expected: "False" and schedule is unchanged."
+
+Parition #2: starttime > 0 (starttime in {1, ..., MAX_INT}
+	Test_part2: input: "x = 10",  expected: "True and for i between starttime and endtime,
+				     workingEmployees contain a string equal to employee and
+        			     the rest of the schedule is unchanged"
+//->
+Partition #3: starttime < endtime {0, ..., endtime}
+	Test_part3: input: "starttime = 3 " 	expected: "expected: "True and for i between starttime and endtime,
+				     		workingEmployees contain a string equal to employee and
+        			     		the rest of the schedule is unchanged"
+Partition #4: starttime > endtime
+<-//
+.....
+
+
+
+//WIP
+
+public String[] workingEmployees(int starttime, int endtime){ ... }
+
+	returns a list of all employees working at some point during the interval starttime to endtime.
+
+Input space:	"starttime" > 0 || = 0 (or: "starttime" in {0, ..., ?})
+		"endtime" < size (or: "endtime" in 0
+
+
+
+
+
