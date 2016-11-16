@@ -1,0 +1,12 @@
+public boolean addWorkingPeriod(String employee, int starttime, int endtime) { ... }
+
+
+Input space:	"starttime" 	in {O, ..., endtime}
+		"endtime" 	in {0, ..., size-1}
+		
+Partition #1: starttime > 0
+	Test_part1: input: "x = -1", expected: "False" and schedule is unchanged."
+Parition #2: starttime < 0
+	Test_part2: input: "x = 1", expected: "True and for i between starttime and endtime,
+				    workingEmployees contain a string equal to employee and
+       				    the rest of the schedule is unchanged"
