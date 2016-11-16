@@ -1,5 +1,27 @@
 public boolean addWorkingPeriod(String employee, int starttime, int endtime) { ... }
 
+##### Richards test
+
+Input space:	starttime in {MIN_INT, ..., MAX_INT}
+				endtime in {MIN_INT, ..., MAX_INT}
+				employee not null
+				
+partition #1:	starttime < 0 (starttime in {MIN_INT, ..., -1})
+partition #2:	endtime >= size (endtime in {size, ..., MAX_INT})
+partition #3:	starttime > endtime (starttime in {endtime + 1, ..., MAX_INT})
+partition #4:	hour.workingEmployees.length = requiredNumber (hour in {starttime, ..., endtime})
+partition #5:	hour.workingEmployees.contrains(employee) (hour in {starttime, ..., endtime})
+
+Border cases:
+border1:		input: starttime 	= MIN_INT, expected: false
+border2:		input: starttime 	= -1, expected: false
+border3:		input: endtime 		= size, expected: false
+border4:		input: endtime 		= MAX_INT, expected: false
+border5:		input: starttime 	= endtime + 1, expected: false
+border6:		input: starttime 	= MAX_INT, expected: false
+
+##### Richards test
+
 
 Input space:	"starttime" 	in {MIN_INT, ..., MAX_INT}
 		"endtime" 	in {MIN_INT, ..., MAX_INT}
