@@ -163,6 +163,7 @@ public class TestClass_v2 {
 	// Border case tests
 	// ----------------------------------------------------------------
 
+	//STARTTIME = MIN_INT
 	@Test
 	public void Test_border1() {
 		ws.setRequiredNumber(2, 0, 4);
@@ -170,6 +171,7 @@ public class TestClass_v2 {
 		assertTrue(verifyHours(2, 0, 0, 4));
 	}
 
+	//STARTTIME = -1
 	@Test
 	public void Test_border2() {
 		ws.setRequiredNumber(2, 0, 4);
@@ -177,6 +179,7 @@ public class TestClass_v2 {
 		assertTrue(verifyHours(2, 0, 0, 4));
 	}
 
+	//STARTTIME = 0
 	@Test
 	public void Test_border3() {
 		ws.setRequiredNumber(2, 0, 4);
@@ -187,23 +190,24 @@ public class TestClass_v2 {
 		}
 	}
 
-	// VM runout, unsure how to test this without contradiction to report text
+	// Unsure how to test this, see report text. Expected result true? Start = max && end = max ?
+	//Same bug as in partition 7, starttime > endtime
 	@Test
 	public void Test_border4() {
-		ws = new WorkSchedule(Integer.MAX_VALUE);
-		ws.setRequiredNumber(2, Integer.MAX_VALUE, Integer.MAX_VALUE);
-		assertTrue(ws.addWorkingPeriod(emp1[0], Integer.MAX_VALUE, Integer.MAX_VALUE));
-		assertTrue(verifyHours(2, 1, Integer.MAX_VALUE, Integer.MAX_VALUE));
-		assertArrayEquals("Test", ws.readSchedule(Integer.MAX_VALUE).workingEmployees, emp1);
-	}
-
-	@Test
-	public void Test_border5() {
 		ws.setRequiredNumber(2, 0, 4);
-		assertFalse(ws.addWorkingPeriod(emp1[0], 0, Integer.MAX_VALUE));
+		assertFalse(ws.addWorkingPeriod(emp1[0], Integer.MAX_VALUE, 4));
 		assertTrue(verifyHours(2, 0, 0, 4));
 	}
 
+	//ENDTIME = MIN_INT
+	@Test
+	public void Test_border5() {
+		ws.setRequiredNumber(2, 0, 4);
+		assertFalse(ws.addWorkingPeriod(emp1[0], 0, Integer.MIN_VALUE));
+		assertTrue(verifyHours(2, 0, 0, 4));
+	}
+
+	//ENDTIME = -1
 	@Test
 	public void Test_border6() {
 		ws.setRequiredNumber(2, 0, 4);
