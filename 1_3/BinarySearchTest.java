@@ -61,8 +61,11 @@ public class BinarySearchTest {
     try {
       // TODO: check that the function 'search' gives the same result as
       // the function 'contains'.
-      
-      return false;
+        boolean s = search(array, value);
+        boolean c = contains(array, value);
+        System.out.println(s + ", "+ c);
+      return s == c;
+//      return false;
     } catch (Exception e) {
       e.printStackTrace();
       return false;

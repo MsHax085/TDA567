@@ -1,0 +1,9 @@
+# Bug 1
+
+Result of search(array, value): false
+Result of contains(array, value): true
+
+Value: 1915105577
+Array: [1255029058, 1915105577]
+
+Comment: The binary search does not find the 'Value'.
