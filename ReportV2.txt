@@ -53,6 +53,8 @@ border #16:		input: hour			= endtime,		expected: false		<-- Same as border #14, 
 
 ------------------------------------------------------------------------------------------------------------------------
 
+A)
+
 ### Input space (alt. 2)
 starttime	in {MIN_INT, ..., MAX_INT}
 endtime		in {MIN_INT, ..., MAX_INT}
@@ -150,3 +152,26 @@ border #21:		input: 	hour				= starttime		expected: true		(as workingEmployees d
 border #22:		input: 	hour				= endtime		expected: true		(as workingEmployees doesn't contains "Richard", valid)
 						workingEmployees 	= {"Victor"}
 						employee			= "Richard"
+
+Input space:	starttime >= 0 ( "starttime" in  {0, ..., MAX_INT})
+				endtime < size ( "endtime" in  {MIN_INT, ..., size-1})
+				
+------------------------------------------------------------------------------------------------------------------------	
+
+B)
+
+### Paritions
+partition #1:	starttime <= endtime ("starttime" in {0, ..., endtime})
+	Test_partition1: input: "starttime" = 1, expected: returns an array with distinct strings** and the schedule is unchanged
+		
+partition #2:	starttime > endtime ("starttime" in {endtime+1, ..., MAX_INT})
+	Test_partition2: input: "starttime" = 4, expected: returns and empty array and the schedule is unchanged.
+	
+###Border cases
+#Partition 1
+border #1:		input: starttime	= 0,		expected: true		(as < 0, valid)
+border #2:		input: starttime 	= endtime	expected: true		(as = endtime, valid)	
+
+#Partition 2
+border #3:		input: starttime	= endtime+1	expected: false		(as > endtime, invalid)
+border #4:		input: starttime	= MAX_INT	expected: false		(as > endtime, invalid)
