@@ -13,7 +13,7 @@ public class BinarySearchTest {
    *           - otherwise, it returns false.
    *           - in either case, 'array' is left unchanged.
    **/
-  public static boolean search(int[] array, int value) {
+public static boolean search(int[] array, int value) {
     int left = 0;
     int right = array.length - 1;
     while (left <= right) {
@@ -21,13 +21,13 @@ public class BinarySearchTest {
       if (array[index] == value)
         return true;
       if (array[index] < value)
-        right = index - 1;
-      else
         left = index + 1;
+      else
+        right = index - 1;
     }
     return false;
 
-  }
+}
 
   public static boolean contains(int[] array, int value) {
     for (int a : array)
@@ -39,7 +39,8 @@ public class BinarySearchTest {
   public static int[] generateArray(int length) {
     // TODO: generate array.
     int[] array = new int[length];
-    for (int i = 0; i < length; i++) array[i] = rand.nextInt(Integer.MAX_VALUE);
+    for (int i = 0; i < length; i++) array[i] = pickElementOutside(array);
+    Arrays.sort(array);
     return array;
   }
 
@@ -61,10 +62,7 @@ public class BinarySearchTest {
     try {
       // TODO: check that the function 'search' gives the same result as
       // the function 'contains'.
-        boolean s = search(array, value);
-        boolean c = contains(array, value);
-        System.out.println(s + ", "+ c);
-      return s == c;
+      return search(array, value) == contains(array, value);
 //      return false;
     } catch (Exception e) {
       e.printStackTrace();

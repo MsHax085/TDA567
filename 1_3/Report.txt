@@ -3,7 +3,23 @@
 Result of search(array, value): false
 Result of contains(array, value): true
 
-Value: 1915105577
-Array: [1255029058, 1915105577]
+Value: 1896450519
+Array: [229675190, 667445957, 798743174, 1311895270, 1663395522, 1713279774, 1896450519, 1906329724, 1972007603]
 
-Comment: The binary search does not find the 'Value'.
+Comment:
+The binary search does not find the 'Value'.
+
+Solution:
+The bug was resolved by correcting the if-statement, as shown below.
+
+Before:
+      if (array[index] < value)
+        right = index - 1;
+      else
+	left = index + 1;
+
+After:
+      if (array[index] < value)
+        left = index + 1;
+      else
+        right = index - 1;
