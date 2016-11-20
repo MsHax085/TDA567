@@ -21,7 +21,7 @@ public class MergeSortTest {
     }
 
     int m = (from + to) / 2;
-    int[] left = sort(array, from, m - 1);
+    int[] left = sort(array, from, m);
     int[] right = sort(array, m + 1, to);
 
     int[] result = new int[left.length + right.length];
@@ -43,24 +43,47 @@ public class MergeSortTest {
 
   public static boolean isSorted(int[] array) {
     // TODO return true if array is sorted.
-    return false;
+    for (int i = 1; i < array.length; i++) {
+        if (array[i - 1] > array[i]) return false;
+    }
+    return true;
   }
 
   public static boolean isPermutation(int[] arrayA, int[] arrayB) {
     // TODO return true if arrayA and arrayB are a permutation of each other.
-    return false;
+    if (arrayA.length != arrayB.length) return false;
+    
+    Arrays.sort(arrayA);
+    Arrays.sort(arrayB);
+    
+    for (int i = 0; i < arrayA.length; i++) {
+        if (arrayA[i] != arrayB[i]) return false;
+    }
+    
+    return true;
   }
 
   public static int[] generate(int length) {
     // TODO generate array.
-    return null;
+    int[] array = new int[length];
+    for (int i = 0; i < length; i++) array[i] = rand.nextInt(Integer.MAX_VALUE);
+    return array;
   }
 
   public static boolean test(int[] array) {
     try {
       // TODO call the sort function and check that result is
       // indeed the sorted version of the input array.
-      return false;
+      int[] mergeSortedArray = sort(array);
+      int[] sortedArrayClone = array.clone();
+      
+      Arrays.sort(sortedArrayClone);
+      
+//      if (!isSorted(mergeSortedArray) || !isSorted(sortedArrayClone)) return false;&// We do not need to test the java library
+      if (!isSorted(mergeSortedArray)) {
+          return false;
+      }
+      return isPermutation(mergeSortedArray, sortedArrayClone);// Should be permutations
     } catch (Exception e) {
       e.printStackTrace();
       return false;

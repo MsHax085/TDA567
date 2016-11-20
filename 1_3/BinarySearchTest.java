@@ -39,7 +39,8 @@ public static boolean search(int[] array, int value) {
   public static int[] generateArray(int length) {
     // TODO: generate array.
     int[] array = new int[length];
-    for (int i = 0; i < length; i++) array[i] = pickElementOutside(array);
+//    for (int i = 0; i < length; i++) array[i] = pickElementOutside(array);// Not random
+    for (int i = 0; i < length; i++) array[i] = rand.nextInt(Integer.MAX_VALUE);
     Arrays.sort(array);
     return array;
   }

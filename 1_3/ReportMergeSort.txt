@@ -1,0 +1,20 @@
+# Bug 1
+
+Before sort: [1474132, 275136835, 321255830, 333036336, 609693602, 647825933, 654138686, 847831706, 1241108062, 1657502079, 2128973458, 2133926807]
+After sort: [1474132, 275136835, 333036336, 609693602, 654138686, 847831706, 1657502079, 2133926807]
+
+Comment:
+The sort function removes values.
+
+Solution:
+The bug was resolved by correcting left and right division in the sort method.
+
+Before:
+    int m = (from + to) / 2;
+    int[] left = sort(array, from, m - 1);
+    int[] right = sort(array, m + 1, to);
+
+After:
+    int m = (from + to) / 2;
+    int[] left = sort(array, from, m);
+    int[] right = sort(array, m + 1, to);
