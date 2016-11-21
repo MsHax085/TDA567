@@ -51,13 +51,25 @@ public class WhiteBoxFixedSet {
 		assertArrayEquals("Test", checkSection, testSet.toArray());
 	}
 	
-	@Test public void SCBCarth(){
+	// Ensures branch coverage with SCBCarth2
+	@Test public void SCBCarth1(){
 		SetFixed setA = new SetFixed();
+		setA.insert(1);
 		setA.insert(2);
 		setA.insert(3);
-		setA.insert(1);
 		int[] AA = {1,2,3};
 		assertArrayEquals("test", AA, setA.toArray());
 		assertTrue(setA.containsArithTriple());
+	}
+	
+	// Ensures branch coverage with SCBCarth1
+	@Test public void SCBCarth2(){
+		SetFixed setA = new SetFixed();
+		setA.insert(1);
+		setA.insert(2);
+		setA.insert(6);
+		int[] AA = {1,2,6};
+		assertArrayEquals("test", AA, setA.toArray());
+		assertFalse(setA.containsArithTriple());
 	}
 }
