@@ -27,8 +27,6 @@ public class WhiteBox {
 		testSet.insert(6);
 		testSet.insert(4);
 		int[] x = {1,2,3,4,5,6};
-		//for(int i : testSet.toArray())
-		//	System.out.println(i);
 		assertArrayEquals("Test", x, testSet.toArray());
 	}
 	
@@ -41,6 +39,7 @@ public class WhiteBox {
 	}
 	
 	@Test public void SCBCsection(){
+		assertArrayEquals("Test", source, testSet.toArray());
 		int[] checkA ={0, 2, 4};
 		int[] checkSection = {1, 5};
 		Set setA = new Set();
@@ -49,17 +48,17 @@ public class WhiteBox {
 		setA.insert(4);
 		assertArrayEquals("Test", setA.toArray(), checkA);
 		testSet.section(setA);
-		//for(int x : testSet.toArray())
-		//	System.out.println("Set: " + x );
 		assertArrayEquals("Test", checkSection, testSet.toArray());
-
 	}
 	
 	@Test public void SCBCarth(){
 		Set setA = new Set();
-		setA.insert(100);
 		setA.insert(2);
-		setA.insert(11);
-		assertTrue(setA.containsArithTriple());
+		setA.insert(3);
+		setA.insert(1);
+		int[] AA = {2,3,1};
+		assertArrayEquals("test", AA, setA.toArray());
+		assertFalse(setA.containsArithTriple());
 	}
 }
+
