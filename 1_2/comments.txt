@@ -1,0 +1,57 @@
+## Comment
+
+Possible values (if both i and j < 3):
+i = 0; j = 0; result: 1 (included in set)
+i = 0; j = 1; result: 0
+i = 0; j = 2; result: -1
+i = 1; j = 0; result: 3 (included in set)
+i = 1; j = 1; result: 2 (included in set)
+i = 1; j = 2; result: 1 (included in set)
+i = 2; j = 0; result: 5
+i = 2; j = 1; result: 4
+i = 2; j = 2; result: 3 (included in set)
+
+However, we do not want to compare the same values (or values with j > i) in the set.
+
+## containsArithTriple, Test 1
+
+Set: {1,2,3}
+
+Possible values (if both j < i < 3):
+i = 1; j = 0; result: 3 (included in set, found by function)
+i = 2; j = 0; result: 5
+i = 2; j = 1; result: 4
+
+## containsArithTriple, Test 2
+
+Set: {4,8,11,15,20}
+
+Possible values (if both j < i < 5):
+i = 1; j = 0; result: 12
+i = 2; j = 0; result: 18
+i = 2; j = 1; result: 14
+i = 3; j = 0; result: 26
+i = 3; j = 1; result: 22
+i = 3; j = 2; result: 19
+i = 4; j = 0; result: 36
+i = 4; j = 1; result: 32
+i = 4; j = 2; result: 29
+i = 4; j = 3; result: 25
+
+No arithmetic triple, confirmed by function!
+
+## containsArithTriple, Test 3
+
+Set: {2,4,5,6,9}
+
+Possible values (if both j < i < 5):
+i = 1; j = 0; result: 6 (included in set, found by function)
+i = 2; j = 0; result: 8
+i = 2; j = 1; result: 6 (included in set, found by function)
+i = 3; j = 0; result: 10
+i = 3; j = 1; result: 8
+i = 3; j = 2; result: 7
+i = 4; j = 0; result: 16
+i = 4; j = 1; result: 14
+i = 4; j = 2; result: 13
+i = 4; j = 3; result: 12

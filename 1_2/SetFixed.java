@@ -60,9 +60,10 @@ public class SetFixed {
 
 	public boolean containsArithTriple() {
 		for (int i = 0; i < a.size(); i++) {
-			for (int j = 0; j < a.size(); j++) {
-				if (member(2 * a.get(i) - a.get(j)) && i != j){
-					return true;}
+			for (int j = 0; j < i; j++) {
+				if (member(2 * a.get(i) - a.get(j))) {
+					return true;
+				}
 			}
 		}
 		return false;
