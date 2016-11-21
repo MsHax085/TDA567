@@ -43,10 +43,15 @@ public class InsertTest {
 	
 	// 1. Branch coverage
 	@Test public void insertMany() {
-		set.insert(4);
-		set.insert(6);
-		set.insert(8);
+		set.insert(1);
+		set.insert(3);
+		set.insert(3);
+		set.insert(2);
 		
 		int[] arr = set.toArray();
+		assertTrue(arr.length == 3);
+		assertTrue(arr[0] == 1);
+		assertTrue(arr[1] == 2);
+		assertTrue(arr[2] == 3);
 	}
 }
