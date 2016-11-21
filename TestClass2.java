@@ -46,6 +46,55 @@ public class TestClass2 {
 	// STARTTIME = 0
 	@Test
 	public void test_border1() {
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.Assert.*;
+
+public class TestClass2 {
+	private WorkSchedule ws;
+	private String[] emp = { "Victor", "Richard" };
+	private String[] emp1 = { "Victor" };
+	private String[] emp2 = { "Richard" };
+	private final static int SIZE = 3;
+
+	@Before
+	public void setUp() {
+		ws = new WorkSchedule(SIZE);
+		ws.setRequiredNumber(2, 0, 2);
+		ws.addWorkingPeriod(emp[0], 1, 1);
+		ws.addWorkingPeriod(emp[1], 1, 1);
+	}
+
+	// ----------------------------------------------------------------
+	// Partition tests
+	// ----------------------------------------------------------------
+
+	@Test
+	public void test_partition1() {
+		boolean bool = false;
+		bool |= containsString(emp[0], ws.workingEmployees(1, 2));
+		bool |= containsString(emp[1], ws.workingEmployees(1, 2));
+		assertTrue(bool);
+		assertTrue(verifyHours(2, 2, 1, 1));
+		assertTrue(verifyHours(2, 0, 0, 0));
+		assertTrue(verifyHours(2, 0, 2, 2));
+	}
+
+	@Test
+	public void test_partition2() {
+		assertNull(ws.workingEmployees(4, 2));
+		assertTrue(verifyHours(2, 2, 1, 1));
+		assertTrue(verifyHours(2, 0, 0, 0));
+		assertTrue(verifyHours(2, 0, 2, 2));
+	}
+
+	// STARTTIME = 0
+	@Test
+	public void test_border1() {
 		boolean bool = false;
 		bool |= containsString(emp[0], ws.workingEmployees(0, 2));
 		bool |= containsString(emp[1], ws.workingEmployees(0, 2));
