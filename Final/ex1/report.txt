@@ -1,6 +1,6 @@
 A)
 
-### Input space (alt. 2)
+### Input space
 starttime	in {MIN_INT, ..., MAX_INT}
 endtime		in {MIN_INT, ..., MAX_INT}
 employee	is not null
@@ -10,7 +10,7 @@ partition #1:	starttime < 0			(starttime in {MIN_INT, ..., -1})
 	Test_partition1: input: "starttime = -3", expected: return false and unchanged schedule
 	
 partition #2:	starttime >= 0			(starttime in {0, ..., MAX_INT})
-	Test_partition2: input: "starttime = 1" expected: return true, for i between starttime and endtime, workingEmployees contain a 		string equal to employee and the rest of the schedule is unchanged.
+	Test_partition2: input: "starttime = 1" expected: return true, for i between starttime and endtime, workingEmployees contain a string equal to employee and the rest of the schedule is unchanged.
 	
 partition #3:	endtime < 0			(endtime in {MIN_INT, ..., -1})
 	Test_partition3: input: "endtime = -6", expected: return false and unchanged schedule
@@ -19,10 +19,10 @@ Partion #4: 	endtime >= size			(endtime in {size, ..., MAX_INT})
  	Test_partition4: input: "endtime = 7", expected: return false and unchanged schedule
 	
 Partion #5:	endtime < size			(endtime in {0, ..., size-1})
- 	Test_partition5: input: "endtime = 3", expected: return true, for i between starttime and endtime, workingEmployees contain a 		string equal to employee and the rest of the schedule is unchanged.
+ 	Test_partition5: input: "endtime = 3", expected: return true, for i between starttime and endtime, workingEmployees contain a string equal to employee and the rest of the schedule is unchanged.
 	
 partition #6:	starttime <= endtime	(starttime in {0, ..., endtime})		<-- 0 as MIN_INT to -1 is tested in partition #1
- 	Test_partition6: input: "starttime = 2", expected: return true, for i between starttime and endtime, workingEmployees contain a 	string equal to employee and the rest of the schedule is unchanged.
+ 	Test_partition6: input: "starttime = 2", expected: return true, for i between starttime and endtime, workingEmployees contain a string equal to employee and the rest of the schedule is unchanged.
 	
 partition #7:	starttime > endtime		(starttime in {endtime + 1, ..., MAX_INT})
  	Test_partition7: input: "starttime = 6" expected: return false and schedule is unchanged.
@@ -31,15 +31,15 @@ partition #8:	hour.workingEmployees.length = requiredNumber	(hour in {starttime,
 	Test_partition8: input: "hour = 1" expected: return false and schedule is unchanged.
 	
 partition #9:	hour.workingEmployees.length != required Number	(hour in {starttime, ..., endtime})
-	Test_partition9: input: "hour = 1" expected: return true, for i between starttime and endtime, workingEmployees contain a 		string equal to employee and the rest of the schedule is unchanged.
+	Test_partition9: input: "hour = 1" expected: return true, for i between starttime and endtime, workingEmployees contain a string equal to employee and the rest of the schedule is unchanged.
 	
 partition #10:	hour.workingEmployees.contains(employee)	(hour in {starttime, ..., endtime})
 	Test_partition10: input: "hour = 2" expected: return false and schedule is unchanged.
 	
 partition 11: ! hour.workingEmployees.contains(employee)	(hour in {starttime, ..., endtime})
-	Test_partition11: input: "hour = 2" expected: return true, for i between starttime and endtime, workingEmployees contain a 		string equal to employee and the rest of the schedule is unchanged.	
+	Test_partition11: input: "hour = 2" expected: return true, for i between starttime and endtime, workingEmployees contain a string equal to employee and the rest of the schedule is unchanged.	
 
-### Border cases (alt. 2)
+### Border cases
 # Partition 1
 border #1:		input: starttime	= MIN_INT,		expected: false		(as negative = invalid)
 border #2:		input: starttime	= -1,			expected: false		(as negative = invalid)
@@ -74,16 +74,14 @@ border #15:		input: 	hour				= starttime		expected: false		(as num. workingEmplo
 border #16:		input: 	hour				= endtime		expected: false		(as num. workingEmployees = requiredNumber, invalid)
 						requiredNumber 		= 0					
 # Partition 9
-border #17:		input: hour				=starttime		expected: true		(as num.
-workingEmployees != requitedNumber, valid)
+border #17:		input:	hour				= starttime		expected: true		(as num. workingEmployees != requitedNumber, valid)
 						requiredNumber		= ?
 						
-border #18:		input: hour				=endtime		expected: true		(as num.
-workingEmployees != requitedNumber, valid)
+border #18:		input:	hour				= endtime		expected: true		(as num. workingEmployees != requitedNumber, valid)
 						requiredNumber		= ?
 
 # Partition 10
-border #19:		input: 	hour				= starttime		expected: false		(as workingEmployees contains "Victor", invalid)
+border #19:		input:	hour				= starttime		expected: false		(as workingEmployees contains "Victor", invalid)
 						workingEmployees 	= {"Victor"}
 						employee			= "Victor"
 border #20:		input: 	hour				= endtime		expected: false		(as workingEmployees contains "Victor", invalid)
