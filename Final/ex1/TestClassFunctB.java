@@ -27,8 +27,8 @@ public class TestClassFunctB {
 	@Test
 	public void test_partition1() {
 		boolean bool = false;
-		bool |= containsString(emp[0], ws.workingEmployees(1, 2));
-		bool |= containsString(emp[1], ws.workingEmployees(1, 2));
+		bool = containsString(emp[0], ws.workingEmployees(1, 2));
+		bool = containsString(emp[1], ws.workingEmployees(1, 2));
 		assertTrue(bool);
 		assertTrue(verifyHours(2, 2, 1, 1));
 		assertTrue(verifyHours(2, 0, 0, 0));
@@ -47,8 +47,8 @@ public class TestClassFunctB {
 	@Test
 	public void test_border1() {
 		boolean bool = false;
-		bool |= containsString(emp[0], ws.workingEmployees(0, 2));
-		bool |= containsString(emp[1], ws.workingEmployees(0, 2));
+		bool = containsString(emp[0], ws.workingEmployees(0, 2));
+		bool = containsString(emp[1], ws.workingEmployees(0, 2));
 		assertTrue(bool);
 		assertTrue(verifyHours(2, 2, 1, 1));
 		assertTrue(verifyHours(2, 0, 0, 0));
@@ -59,8 +59,8 @@ public class TestClassFunctB {
 	@Test
 	public void test_border2() {
 		boolean bool = false;
-		bool |= containsString(emp[0], ws.workingEmployees(2, 2));
-		bool |= containsString(emp[1], ws.workingEmployees(2, 2));
+		bool = containsString(emp[0], ws.workingEmployees(2, 2));
+		bool = containsString(emp[1], ws.workingEmployees(2, 2));
 		assertFalse(bool);
 		assertTrue(verifyHours(2, 2, 1, 1));
 		assertTrue(verifyHours(2, 0, 0, 0));
