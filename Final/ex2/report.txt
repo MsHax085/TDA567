@@ -1,0 +1,27 @@
+Insert contains a bug.
+	The break statements inside the if clauses causes the
+	function to add the element an additional time at the end
+	even if if wasn't supposed to.
+	
+	Replacing break with return fixes this bug.
+
+Member contains no bug.
+	
+Section contains a bug.
+	When the if (a.get(i).equals(s.a.get(j))) is true it is supposed
+	to remove the element as it does but shouldn't increment index i
+	since the array size is decreased thus increment of index i is
+	unneccessary.
+	
+	Removing i++ under the first if-node fixes this bug.
+	
+containsArithTriple contains a bug.
+	The bug manifests itself because X-Y=Y-Z -> X=2Y-Z, with values
+	{X,Y,Z} when index i,j=0 the condition of the if-statement will
+	always return true because member(2 * a.get(i) - a.get(j)) will
+	always check if the first element X is member of the set {X,Y,Z}
+	which always be true. So it doesn't matter what values you try to
+	build a test suite of, you won't be able to get Statement Coverage
+	this itself is an indication of the presence of the bug.
+	
+	Changing the loop condition in the second for-node to j < i fixes this bug.
