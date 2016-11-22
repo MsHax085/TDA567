@@ -1,4 +1,3 @@
-package labb1;
 import java.util.ArrayList;
 
 public class Set {

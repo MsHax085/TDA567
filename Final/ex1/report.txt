@@ -70,31 +70,31 @@ border #14:		input: starttime	= MAX_INT,		expected: false		(as > endtime = inval
 
 # Partition 8
 border #15:		input: 	hour				= starttime		expected: false		(as num. workingEmployees = requiredNumber, invalid)
-						requiredNumber 		= 0
+				requiredNumber 			= 0
 border #16:		input: 	hour				= endtime		expected: false		(as num. workingEmployees = requiredNumber, invalid)
-						requiredNumber 		= 0					
+				requiredNumber 			= 0					
 # Partition 9
 border #17:		input:	hour				= starttime		expected: true		(as num. workingEmployees != requitedNumber, valid)
-						requiredNumber		= ?
+				requiredNumber			= ?
 						
 border #18:		input:	hour				= endtime		expected: true		(as num. workingEmployees != requitedNumber, valid)
-						requiredNumber		= ?
+				requiredNumber			= ?
 
 # Partition 10
 border #19:		input:	hour				= starttime		expected: false		(as workingEmployees contains "Victor", invalid)
-						workingEmployees 	= {"Victor"}
-						employee			= "Victor"
+				workingEmployees 		= {"Victor"}
+				employee			= "Victor"
 border #20:		input: 	hour				= endtime		expected: false		(as workingEmployees contains "Victor", invalid)
-						workingEmployees 	= {"Victor"}
-						employee			= "Victor"
+				workingEmployees 		= {"Victor"}
+				employee			= "Victor"
 					
 # Partition 11
 border #21:		input: 	hour				= starttime		expected: true		(as workingEmployees doesn't contains "Richard", valid)
-						workingEmployees 	= {"Victor"}
-						employee			= "Richard"
+				workingEmployees 		= {"Victor"}
+				employee			= "Richard"
 border #22:		input: 	hour				= endtime		expected: true		(as workingEmployees doesn't contains "Richard", valid)
-						workingEmployees 	= {"Victor"}
-						employee			= "Richard"
+				workingEmployees 		= {"Victor"}
+				employee			= "Richard"
 
 Input space:	starttime >= 0 ( "starttime" in  {0, ..., MAX_INT})
 				endtime < size ( "endtime" in  {MIN_INT, ..., size-1})

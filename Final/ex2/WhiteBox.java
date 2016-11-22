@@ -1,13 +1,11 @@
-package labb1;
 import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert.*;
-import labb1.Set.*;
 
-public class WhiteBoxSet {
+public class WhiteBox {
 
 	private Set testSet = new Set();
 	private int[] source = {1,2,4,5};
