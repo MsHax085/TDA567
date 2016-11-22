@@ -116,5 +116,5 @@ border #1:		input: starttime	= 0,		expected: true		(as < 0, valid)
 border #2:		input: starttime 	= endtime	expected: true		(as = endtime, valid)	
 
 #Partition 2
-border #3:		input: starttime	= endtime+1	expected: false		(as > endtime, invalid)
-border #4:		input: starttime	= MAX_INT	expected: false		(as > endtime, invalid)
+border #3:		input: starttime	= endtime+1	expected: null		(as > endtime, invalid)
+border #4:		input: starttime	= MAX_INT	expected: null		(as > endtime, invalid)

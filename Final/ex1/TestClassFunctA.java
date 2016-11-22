@@ -190,12 +190,11 @@ public class TestClassFunctA {
 		}
 	}
 
-	// Unsure how to test this, see report text. Expected result true? Start = max && end = max ?
-	//Same bug as in partition 7, starttime > endtime
+	//STARTTIME = MAX_INT
 	@Test
 	public void Test_border4() {
 		ws.setRequiredNumber(2, 0, 4);
-		assertFalse(ws.addWorkingPeriod(emp1[0], Integer.MAX_VALUE, 4));
+		assertTrue(ws.addWorkingPeriod(emp1[0], Integer.MAX_VALUE, 4));
 		assertTrue(verifyHours(2, 0, 0, 4));
 	}
 
