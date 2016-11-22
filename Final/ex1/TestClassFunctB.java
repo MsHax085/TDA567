@@ -61,7 +61,7 @@ public class TestClassFunctB {
 		boolean bool = false;
 		bool = containsString(emp[0], ws.workingEmployees(2, 2));
 		bool = containsString(emp[1], ws.workingEmployees(2, 2));
-		assertTrue(bool);
+		assertFalse(bool);
 		assertTrue(verifyHours(2, 2, 1, 1));
 		assertTrue(verifyHours(2, 0, 0, 0));
 		assertTrue(verifyHours(2, 0, 2, 2));
