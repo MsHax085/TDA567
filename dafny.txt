@@ -98,10 +98,10 @@ class LimitedStack{
       {
         var i : int := 0;
         while (i < capacity - 1 )
-        invariant 0 <= i < capacity;
-        invariant top == old(top);
-        invariant forall j : int :: 0 <= j < i ==> arr[j] == old(arr[j + 1]);
-        invariant forall j : int :: i <= j < capacity ==> arr[j] == old(arr[j]);
+        	invariant 0 <= i < capacity;
+        	invariant top == old(top);
+        	invariant forall j : int :: 0 <= j < i ==> arr[j] == old(arr[j + 1]);
+        	invariant forall j : int :: i <= j < capacity ==> arr[j] == old(arr[j]);
         {
           arr[i] := arr[i + 1];
           i := i + 1;
@@ -109,16 +109,27 @@ class LimitedStack{
         top := top - 1;
       }
 
-/*
+
       //Push onto full stack, oldest element is discarded.
       method Push2(elem : int)
-      
-      {
-        
-      }
-*/
+      requires Valid();
+	    ensures Valid();
+	    ensures (top == capacity-1) ==> Full() && arr[top] == elem && (forall i:: 0 <= i < capacity-1==> arr[i] == old(arr[i+1]))
+      ensures (top != capacity-1) ==> !Full() && top == old(top)+1 && (forall i:: 0<= i < top==> arr[i] == old(arr[i]))
+      modifies arr, `top;  
+     {
+       if top == capacity -1 {
+         Shift();
+         arr[top+1] := elem;
+         top := top+1;
+       }
+       else {
+         Push(elem);
+       }
+     }
 
-/*
+
+
 
 // When you are finished,  all the below assertions should be provable. 
 // Feel free to add extra ones as well.
@@ -151,5 +162,5 @@ class LimitedStack{
            assert s.arr[0] == 32;
                      
        }
-*/
+
 }
