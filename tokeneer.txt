@@ -1,0 +1,73 @@
+
+
+class Token{
+	var fingerprints : int;
+	var securityclearance : int;
+	var valid : bool;
+	
+	method init(finger : int, clearance : int)
+	modifies this;
+	ensures fingerprints == finger;
+	ensures valid == true;
+	ensures securityclearance == clearance;
+	{
+		valid := true;
+		fingerprints := finger;
+		securityclearance := clearance;
+	}
+	
+}
+
+class EnrollmentStation{
+	var enrolledUsers : set<User>;
+	
+	method init()
+	modifies this;
+	ensures enrolledUsers == {};
+	{
+		enrolledUsers := {};
+	}
+}
+
+
+class IDStatation{
+	var requiredsecurity : int;
+	var alarmState : bool;
+	var doorState : bool;
+	
+  method init(requiredsecurity : int)
+  modifies this;
+  requires requiredsecurity == 3 || requiredsecurity == 2 || requiredsecurity == 1;
+  ensures this.requiredsecurity == requiredsecurity && !alarmState && !doorState;
+  {
+    this.requiredsecurity := requiredsecurity;
+    alarmState := false;
+    doorState := false;
+    
+  }
+  
+  predicate validateSecurityClearance(token : Token)
+	reads this, token;
+  requires token != null;
+	{
+		token.securityclearance >= requiredsecurity
+	}
+  
+  predicate validateFingerprints(token: Token, scannedFingerprint : int)
+  reads this, token;
+  requires token != null;
+  {
+    token.fingerprints == scannedFingerprint
+  }
+}
+
+class User{
+  var token: Token
+  
+  method init()
+  modifies this;
+  ensures this.token == null;
+  {
+    this.token := null;
+  }
+}
