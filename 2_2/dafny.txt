@@ -53,6 +53,7 @@ class LimitedStack{
       requires !Empty();
       requires Valid();
       ensures elem==arr[top];
+      ensures Valid();
       {
         return arr[top];
       }
@@ -64,6 +65,7 @@ class LimitedStack{
       requires Valid();
       requires !Full();
       modifies arr,`top;
+      ensures Valid();
       //Ensure old values correspond to appropriate behaviour after push
       ensures top == old(top)+1;
       ensures forall i:int::0<=i<top==>arr[i]==old(arr[i]);
