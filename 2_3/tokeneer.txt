@@ -14,6 +14,13 @@ class Token{
 			securityclearance := clearance;
 		}
 	
+	method cancelToken()
+		modifies `valid;
+		requires valid == true;
+		ensures valid == false;
+		{
+			valid := false;
+		}
 }
 
 class EnrollmentStation{
@@ -24,6 +31,20 @@ class EnrollmentStation{
 		ensures |enrolledUsers| == 0;
 		{
 			enrolledUsers := map[];
+		}
+		
+	method createUser(fingerprint : int, clearance : int) returns (user : User)
+		modifies `enrolledUsers;
+		requires fingerprint !in enrolledUsers;
+		ensures user != null;
+		ensures fingerprint in enrolledUsers;
+		ensures enrolledUsers[fingerprint] == user;
+		{
+			var newToken := new Token.init(fingerprint, clearance);
+			var newUser := new User.init(fingerprint, newToken);
+			enrolledUsers := enrolledUsers[fingerprint := newUser];
+			return newUser;
+			
 		}
 }
 
@@ -42,29 +63,34 @@ class IDStatation{
 			alarmState := false;
 			doorState := false;
 		}
-  
-	predicate validateSecurityClearance(token : Token)
-		reads this, token;
-		requires token != null;
+		
+	method requestAccess(user : User) returns (valid : bool)
+		requires user != null;
+		requires user.token != null;
+		requires user.token.valid;
+		requires user.token.fingerprint == user.fingerprint;
+		requires user.token.securityclearance >= requiredsecurity
 		{
-			token.securityclearance >= requiredsecurity
-		}
-  
-	predicate validatefingerprint(token: Token, scannedFingerprint : int)
-		reads this, token;
-		requires token != null;
-		{
-		token.fingerprint == scannedFingerprint
+			var token := user.token;
+			if (token.fingerprint == user.fingerprint) {
+				if (token.securityclearance >= requiredsecurity) {
+					return true;
+				}
+			}
+			return false;
 		}
 }
 
 class User{
+	var fingerprint: int;
 	var token: Token
 
-	constructor init()
+	constructor init(fingerprint : int, t : Token)
 		modifies this;
-		ensures this.token == null;
+		ensures this.fingerprint == fingerprint;
+		ensures this.token == t;
 		{
-			this.token := null;
+			this.fingerprint := fingerprint;
+			this.token := t;
 		}
 }
