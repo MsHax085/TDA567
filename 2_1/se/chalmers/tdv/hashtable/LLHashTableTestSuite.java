@@ -86,7 +86,7 @@ public class LLHashTableTestSuite {
 			TestRunner<LLHashTableAction, Tuple<LLHashTable,ArrayList<Integer>>> runner = new TestRunner<>(LLHashTableAction.class,new LLHashTableInterpreter(nrBuckets));
 			A = new Integer(rand.nextInt(MAX_KEY));
 			NOT_A = new Integer(rand.nextInt(MAX_KEY));
-			if(A == NOT_A) NOT_A = (A+1) % MAX_KEY;
+			if(A.compareTo(NOT_A) == 0) NOT_A = (A+1) % MAX_KEY;
 			B = new Integer(rand.nextInt(MAX_KEY));
 			C = new Integer(rand.nextInt(MAX_KEY));
 			if(!runner.runTestPrint(PRINT_CODE,generate(property))){
