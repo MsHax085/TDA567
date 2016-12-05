@@ -1,32 +1,30 @@
-
-
 class Token{
-	var fingerprints : int;
+	var fingerprint : int;
 	var securityclearance : int;
 	var valid : bool;
 	
-	method init(finger : int, clearance : int)
-	modifies this;
-	ensures fingerprints == finger;
-	ensures valid == true;
-	ensures securityclearance == clearance;
-	{
-		valid := true;
-		fingerprints := finger;
-		securityclearance := clearance;
-	}
+	constructor init(finger : int, clearance : int)
+		modifies this;
+		ensures fingerprint == finger;
+		ensures securityclearance == clearance;
+		ensures valid == true;
+		{
+			valid := true;
+			fingerprint := finger;
+			securityclearance := clearance;
+		}
 	
 }
 
 class EnrollmentStation{
-	var enrolledUsers : set<User>;
+	var enrolledUsers : map<int, User>;
 	
-	method init()
-	modifies this;
-	ensures enrolledUsers == {};
-	{
-		enrolledUsers := {};
-	}
+	constructor init()
+		modifies this;
+		ensures |enrolledUsers| == 0;
+		{
+			enrolledUsers := map[];
+		}
 }
 
 
@@ -35,39 +33,38 @@ class IDStatation{
 	var alarmState : bool;
 	var doorState : bool;
 	
-  method init(requiredsecurity : int)
-  modifies this;
-  requires requiredsecurity == 3 || requiredsecurity == 2 || requiredsecurity == 1;
-  ensures this.requiredsecurity == requiredsecurity && !alarmState && !doorState;
-  {
-    this.requiredsecurity := requiredsecurity;
-    alarmState := false;
-    doorState := false;
-    
-  }
+	constructor init(requiredsecurity : int)
+		modifies this;
+		requires requiredsecurity == 3 || requiredsecurity == 2 || requiredsecurity == 1;
+		ensures this.requiredsecurity == requiredsecurity && !alarmState && !doorState;
+		{
+			this.requiredsecurity := requiredsecurity;
+			alarmState := false;
+			doorState := false;
+		}
   
-  predicate validateSecurityClearance(token : Token)
-	reads this, token;
-  requires token != null;
-	{
-		token.securityclearance >= requiredsecurity
-	}
+	predicate validateSecurityClearance(token : Token)
+		reads this, token;
+		requires token != null;
+		{
+			token.securityclearance >= requiredsecurity
+		}
   
-  predicate validateFingerprints(token: Token, scannedFingerprint : int)
-  reads this, token;
-  requires token != null;
-  {
-    token.fingerprints == scannedFingerprint
-  }
+	predicate validatefingerprint(token: Token, scannedFingerprint : int)
+		reads this, token;
+		requires token != null;
+		{
+		token.fingerprint == scannedFingerprint
+		}
 }
 
 class User{
-  var token: Token
-  
-  method init()
-  modifies this;
-  ensures this.token == null;
-  {
-    this.token := null;
-  }
+	var token: Token
+
+	constructor init()
+		modifies this;
+		ensures this.token == null;
+		{
+			this.token := null;
+		}
 }
