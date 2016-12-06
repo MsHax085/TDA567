@@ -54,17 +54,45 @@ public class LLHashTableTestSuite {
 			new LLHashTableAction[]{ put(A,C), put(NOT_A, D)}, 
 			new LLHashTableAction[]{ put(NOT_A,D), put(A, C)});
 	
+	/**
+	* Testing that put(Ka,Va), put(Ka,Vb), put(Ka,Vc), remove(Kb) <==> put(Ka,Vc) iff (Vc != Vb) || (Vc !=Va)
+	*/
 	static final Property<LLHashTableAction> put = new Property<>("put", false, true, 
 		new LLHashTableAction[]{ put(1,1), put(1,2), put(1,3), remove(3)}, 
 		new LLHashTableAction[]{ put(1,3)});
 	
-	static final Property<LLHashTableAction> remove = new Property<>("remove", false, true, 
-		new LLHashTableAction[]{ put(1,1), put(2,2), put(3,3), remove(3)}, 
-		new LLHashTableAction[]{ put(2,2), put(1,1), remove(3)});
+	/**
+	 * Testing that put(Ka,Va), put(Kb,Vb), remove(Ka) <==> put(Kb,Vb) iff Ka != Kb
+	 */
+	static final Property<LLHashTableAction> removeUnmodified = new Property<>("removeUnmodified", false, true, 
+			new LLHashTableAction[]{ put(1,1), put(2,2), remove(1)}, 
+			new LLHashTableAction[]{ put(2,2)});
+	
+	/**
+	 * Testing that put(Ka,Va), put(Kb,Vb), remove(Ka) <==> put(Kb,Vb) iff Ka != Kb
+	 *while value of key:1 variated
+	 */
+	static final Property<LLHashTableAction> removeModified = new Property<>("removeModified", true, true, 
+			new LLHashTableAction[]{ put(1,1), put(2,2), remove(1)}, 
+			new LLHashTableAction[]{ put(2,2), remove(1)});
+	
+	/**
+	* Testing that put(Ka,Va), put(Kb, Vb) <==> put(Ka,Va) iff (Ka == Kb) && (Va == Vb) 
+	*/
+	static final Property<LLHashTableAction> addDuplicates = new Property<>("addDuplicates", true, true, 
+			new LLHashTableAction[]{ put(1,1), put(1,1)}, 
+			new LLHashTableAction[]{ put(1,1)});
+	
+	/**
+	* Testing that put(Ka,Va), get(Ka) <==> put(Ka,Va), output(Ka)
+	*/
+	static final Property<LLHashTableAction> findZ = new Property<>("findZ", true, true, 
+			new LLHashTableAction[]{ put(1,1), get(1)}, 
+			new LLHashTableAction[]{ put(1,1), output(1)});
 
 	// Java generic and arrays = headache
 	static final Object[] allPropertiesObjects = new Object[]
-			{ commutePut, put, remove };
+			{ commutePut, put, removeUnmodified, removeModified, addDuplicates, findZ  };
 	
 	static final Property<LLHashTableAction>[] allProperties;
 	
