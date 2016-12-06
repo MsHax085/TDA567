@@ -93,15 +93,15 @@ public class LLHashTable {
 	while (el != null) {
 		if(el.key == key){
 			this.buffer[index] = el.next;
-			return;
+			break;
 		}
 		else if( el.next != null && el.next.key == key) {
 			el.next = el.next.next;
-			this.buffer[index].next = el;
-			return;
+			break;
 		}
 		el = el.next;
 	}
+	return;
 	}
 
 	public String toString() {
