@@ -54,13 +54,17 @@ public class LLHashTableTestSuite {
 			new LLHashTableAction[]{ put(A,C), put(NOT_A, D)}, 
 			new LLHashTableAction[]{ put(NOT_A,D), put(A, C)});
 	
+	static final Property<LLHashTableAction> put = new Property<>("put", false, false, 
+		new LLHashTableAction[]{ put(1,1), put(1,2), put(1,3), remove(3)}, 
+		new LLHashTableAction[]{ put(1,3)});
+	
 	static final Property<LLHashTableAction> remove = new Property<>("remove", false, false, 
 		new LLHashTableAction[]{ put(1,1), put(2,2), put(3,3), remove(3)}, 
-		new LLHashTableAction[]{ put(2,2), put(3,3)});
+		new LLHashTableAction[]{ put(2,2), put(1,1)});
 
 	// Java generic and arrays = headache
 	static final Object[] allPropertiesObjects = new Object[]
-			{ commutePut };
+			{ commutePut, put, remove };
 	
 	static final Property<LLHashTableAction>[] allProperties;
 	
