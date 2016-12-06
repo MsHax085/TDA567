@@ -33,20 +33,21 @@ class EnrollmentStation{
 			enrolledUsers := map[];
 		}
 		
-	method createUser(fingerprint : int, clearance : int) returns (user : User)
-		modifies `enrolledUsers;
+	method createUser(user : User, fingerprint: int, clearance : int)
+		modifies `enrolledUsers, user`token, user.token;
 		requires fingerprint !in enrolledUsers;
+    requires clearance == 1 || clearance == 2 || clearance == 3;
+    requires user !=null;
+    requires user.token == null;
 		ensures fingerprint in enrolledUsers;
 		ensures enrolledUsers[fingerprint] == user;
-		ensures user != null;
-		ensures user.fingerprint == fingerprint;
 		ensures user.token != null;
+		ensures user.token.securityclearance == clearance;
 		ensures user.token.fingerprint == fingerprint;
+    ensures user.token.valid == true;
 		{
-    		var newToken := new Token.init(fingerprint, clearance);
-    		var newUser := new User.init(fingerprint, newToken);
-    		enrolledUsers := enrolledUsers[fingerprint := newUser];
-    		return newUser; 
+    		user.token := new Token.init(fingerprint, clearance);
+    		enrolledUsers := enrolledUsers[fingerprint := user];
 		}
 }
 
@@ -113,13 +114,13 @@ class User{
 	var fingerprint: int;
 	var token: Token
 
-	constructor init(fingerprint : int, t : Token)
+	constructor init(fingerprint : int)
 		modifies this;
 		ensures this.fingerprint == fingerprint;
-		ensures this.token == t;
+		ensures this.token == null;
 		{
 			this.fingerprint := fingerprint;
-			this.token := t;
+			this.token := null;
 		}
 }
 
@@ -128,17 +129,18 @@ class Test {
 	{
 		var boolean : bool;
 		var ERS := new EnrollmentStation.init();
-		var user1LvL1 := ERS.createUser(1,1);
-		var user2LvL2 := ERS.createUser(2,2);
-		var user3LvL3 := ERS.createUser(3,3);
-		boolean := user1LvL1.fingerprint in ERS.enrolledUsers;
-		if(!boolean){}
-		else{assert true;}
-		boolean := user2LvL2.fingerprint in ERS.enrolledUsers;
-		if(!boolean){}
-		else{assert true;}
-		boolean := user3LvL3.fingerprint in ERS.enrolledUsers;
-		if(!boolean){}
-		else{assert true;}
+		var user1LvL1 := new User.init(1);
+    var user2LvL3 := new User.init(2);
+    ERS.createUser(user1LvL1, 1,1);
+    ERS.createUser(user2LvL3, 2,3);
+    assert user1LvL1.token.valid;
+    assert user1LvL1.token.securityclearance == 1;
+    assert user1LvL1.token.fingerprint == 1;
+    assert user1LvL1.fingerprint == 1;
+    assert user2LvL3.token.valid;
+    assert user2LvL3.token.securityclearance == 3;
+    assert user2LvL3.token.fingerprint == 2;
+    assert user2LvL3.fingerprint == 2;
+	
 	}
  }
