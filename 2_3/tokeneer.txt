@@ -102,6 +102,14 @@ class IDStatation{
         			}
 			}
   		}
+		
+	method closeDoor()
+		modifies `doorState;
+		requires doorState == true;
+		ensures doorState == false;
+		{
+			doorState := false;
+		}
 }
 
 class User{
