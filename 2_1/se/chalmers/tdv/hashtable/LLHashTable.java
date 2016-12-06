@@ -63,7 +63,13 @@ public class LLHashTable {
 
 	public void put(int key, int value) {
 		int index = hashOf(key);
-		this.buffer[index] = new HashEntry(key, value, this.buffer[index]);
+                HashEntry entry = find(key);
+                if (entry == null) {
+                    entry = new HashEntry(key, value, this.buffer[index]);
+                    this.buffer[index] = entry;
+                } else {
+                    entry.value = value;
+                }
 	}
 
 	private HashEntry find(int key) {
@@ -87,21 +93,17 @@ public class LLHashTable {
 		}
 	}
 
-	public void remove(int key) {
-	int index = hashOf(key);
-	HashEntry el = this.buffer[index];
-	while (el != null) {
-		if(el.key == key){
-			this.buffer[index] = el.next;
-			break;
-		}
-		else if( el.next != null && el.next.key == key) {
-			el.next = el.next.next;
-			break;
-		}
-		el = el.next;
-	}
-	return;
+        public void remove(int key) {
+            int index = hashOf(key);
+            HashEntry prev = null, el = this.buffer[index];
+            while (el != null) {
+                if (el.key == key) {
+                    if (prev != null) prev.next = el.next;
+                    else buffer[index] = el.next;
+                }
+                prev = el;
+                el = el.next;
+            }
 	}
 
 	public String toString() {
