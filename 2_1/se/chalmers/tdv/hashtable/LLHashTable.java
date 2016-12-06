@@ -88,15 +88,20 @@ public class LLHashTable {
 	}
 
 	public void remove(int key) {
-		int index = hashOf(key);
-		HashEntry el = this.buffer[index];
-		while (el != null) {
-			if (el.next != null && el.next.key == key) {
-				el.next = el.next.next;
-
-			}
-			el = el.next;
+	int index = hashOf(key);
+	HashEntry el = this.buffer[index];
+	while (el != null) {
+		if(el.key == key){
+			this.buffer[index] = el.next;
+			break;
 		}
+		else if( el.next != null && el.next.key == key) {
+			this.buffer[index].next = el.next.next;
+			break;
+		}
+		el = el.next;
+	}
+	return;
 	}
 
 	public String toString() {
