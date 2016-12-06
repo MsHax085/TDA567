@@ -64,43 +64,38 @@ class IDStatation{
 		}
 		
 	method requestAccess(user : User, scannedFP : int) returns (valid : bool)
-    modifies user.token`valid, this`alarmState, this`doorState; 
+		modifies user.token`valid, this`alarmState, this`doorState; 
 		requires user != null;
 		requires user.token != null;
 		requires user.token.valid == true;
 		requires user.token.fingerprint == user.fingerprint;
 		requires user.token.securityclearance >= requiredsecurity;
-    ensures old(!user.token.valid || user.token.fingerprint!=scannedFP) ==> !valid && !user.token.valid && alarmState && !doorState;
-    ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance >= requiredsecurity) ==> valid && !alarmState && user.token.valid && doorState;
-    ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance < requiredsecurity) ==> !valid && alarmState && doorState && user.token.valid;
+		ensures old(!user.token.valid || user.token.fingerprint!=scannedFP) ==> !valid && !user.token.valid && alarmState && !doorState;
+		ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance >= requiredsecurity) ==> valid && !alarmState && user.token.valid && doorState;
+		ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance < requiredsecurity) ==> !valid && alarmState && doorState && user.token.valid;
 		{
  			var token := user.token;
-      if(token.valid)
-      {
-  			if (token.fingerprint == scannedFP) 
-        {
-  				if (token.securityclearance >= requiredsecurity) 
-          {
-            alarmState := false;
-            doorState := true;
-            valid := true;
-  				  return;
-  				}
-          alarmState := true;
-          doorState := false;
-          valid := false;
-          return;   
-  			}
-        else 
-        {
-          user.token.valid := false;
-          alarmState := true;
-          doorState := false;
-          valid := false;
-          return;
-        }
+			if (token.valid) {
+				if (token.fingerprint == scannedFP) {
+					if (token.securityclearance >= requiredsecurity) {
+						alarmState := false;
+						doorState := true;
+						valid := true;
+						return;
+					}
+					alarmState := true;
+					doorState := false;
+					valid := false;
+					return;   
+				} else {
+					user.token.valid := false;
+					alarmState := true;
+					doorState := false;
+					valid := false;
+					return;
+				}
+			}
 		}
-  }
   
   method closeDoor()
 		modifies `doorState;
