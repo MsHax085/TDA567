@@ -60,7 +60,7 @@ public class LLHashTableTestSuite {
 	
 	static final Property<LLHashTableAction> remove = new Property<>("remove", false, true, 
 		new LLHashTableAction[]{ put(1,1), put(2,2), put(3,3), remove(3)}, 
-		new LLHashTableAction[]{ put(2,2), put(1,1)});
+		new LLHashTableAction[]{ put(2,2), put(1,1), remove(3)});
 
 	// Java generic and arrays = headache
 	static final Object[] allPropertiesObjects = new Object[]
