@@ -24,19 +24,23 @@ class Token{
 }
 
 class EnrollmentStation{
-	var enrolledUsers : set<User>;
+	var enrolledUsers : map<int, User>;
 	
 	method init()
 		modifies this;
 		ensures |enrolledUsers| == 0;
 		{
-			enrolledUsers := {};
+			enrolledUsers := map[];
 		}
 		
 	method createUser(fingerprint : int, clearance : int) returns (user : User)
 		modifies `enrolledUsers;
-		ensures enrolledUsers == old(enrolledUsers) + {user};
-		ensures user in enrolledUsers;
+		requires fingerprint !in enrolledUsers;
+    requires clearance == 1 || clearance == 2 || clearance ==3;
+    
+    ensures enrolledUsers == old(enrolledUsers)[fingerprint := user];
+		ensures fingerprint in enrolledUsers;
+		ensures enrolledUsers[fingerprint] == user;
 		ensures user != null;
 		ensures user.fingerprint == fingerprint;
 		ensures user.token != null;
@@ -44,7 +48,7 @@ class EnrollmentStation{
 		{
     		var newToken := new Token.init(fingerprint, clearance);
     		var newUser := new User.init(fingerprint, newToken);
-    		enrolledUsers := enrolledUsers + {newUser};
+    		enrolledUsers := enrolledUsers[fingerprint := newUser];
     		return newUser; 
 		}
 }
@@ -130,13 +134,13 @@ class Test {
 		var user1LvL1 := ERS.createUser(1,1);
 		var user2LvL2 := ERS.createUser(2,2);
 		var user3LvL3 := ERS.createUser(3,3);
-		boolean := user1LvL1 in ERS.enrolledUsers;
+		boolean := user1LvL1.fingerprint in ERS.enrolledUsers;
 		if(!boolean){}
 		else{assert true;}
-		boolean := user2LvL2 in ERS.enrolledUsers;
+		boolean := user2LvL2.fingerprint in ERS.enrolledUsers;
 		if(!boolean){}
 		else{assert true;}
-		boolean := user3LvL3 in ERS.enrolledUsers;
+		boolean := user3LvL3.fingerprint in ERS.enrolledUsers;
 		if(!boolean){}
 		else{assert true;}
 	}
