@@ -44,7 +44,9 @@ class EnrollmentStation{
 		ensures user != null;
 		ensures user.fingerprint == fingerprint;
 		ensures user.token != null;
+		ensures user.token.valid == true;
 		ensures user.token.fingerprint == fingerprint;
+		ensures user.token.securityclearance == clearance;
 		{
     		var newToken := new Token.init(fingerprint, clearance);
     		var newUser := new User.init(fingerprint, newToken);
