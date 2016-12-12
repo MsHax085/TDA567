@@ -56,7 +56,7 @@ class EnrollmentStation{
 }
 
 
-class IDStatation{
+class IDStation{
 	var requiredsecurity : int;
 	var alarmState : bool;
 	var doorState : bool;
@@ -135,7 +135,10 @@ class Test {
 		var user1LvL1 := ERS.createUser(1,1);
 		var user2LvL2 := ERS.createUser(2,2);
 		var user3LvL3 := ERS.createUser(3,3);
-		
+    var doorLvL1 := new IDStation.init(1);
+		var doorLvL2 := new IDStation.init(2);
+    var doorLvL3 := new IDStation.init(3);
+    
 		assert user1LvL1.fingerprint in ERS.enrolledUsers;
 		assert user1LvL1.token.valid == true;
 		assert user1LvL1.token.fingerprint == 1;
@@ -153,5 +156,21 @@ class Test {
 		assert user3LvL3.token.fingerprint == 3;
 		assert user3LvL3.token.securityclearance == 3;
 		assert user3LvL3.fingerprint == 3;
+    
+    assert doorLvL1.requiredsecurity == 1;
+    assert doorLvL1.alarmState == false;
+    assert doorLvL1.doorState == false;
+    
+    assert doorLvL2.requiredsecurity == 2;
+    assert doorLvL2.alarmState == false;
+    assert doorLvL2.doorState == false;
+    
+    assert doorLvL3.requiredsecurity == 3;
+    assert doorLvL3.alarmState == false;
+    assert doorLvL3.doorState == false;
+    
+    var boolean : bool;
+    boolean := doorLvL1.requestAccess(user1LvL1, 1);
+    assert boolean == true;
 	}
 }
