@@ -43,6 +43,7 @@ class EnrollmentStation{
 		ensures enrolledUsers[fingerprint] == user;
 		ensures user != null;
 		ensures user.fingerprint == fingerprint;
+    ensures fresh(user.token);
 		ensures user.token != null;
 		ensures user.token.valid == true;
 		ensures user.token.fingerprint == fingerprint;
@@ -72,37 +73,30 @@ class IDStation{
 		}
 		
 	method requestAccess(user : User, scannedFP : int) returns (valid : bool)
-		modifies user.token`valid, this`alarmState, this`doorState; 
+		modifies user.token`valid, `alarmState,`doorState;
 		requires user != null;
 		requires user.token != null;
 		requires user.token.valid == true;
-		requires user.token.fingerprint == user.fingerprint;
-		requires user.token.securityclearance >= requiredsecurity;
-		ensures old(!user.token.valid || user.token.fingerprint!=scannedFP) ==> !valid && !user.token.valid && alarmState && !doorState;
-		ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance >= requiredsecurity) ==> valid && !alarmState && user.token.valid && doorState;
-		ensures old(user.token.valid && user.token.fingerprint==scannedFP && user.token.securityclearance < requiredsecurity) ==> !valid && alarmState && doorState && user.token.valid;
+		ensures user.token.fingerprint!=scannedFP ==> !valid && !user.token.valid && alarmState && !doorState;
+		ensures user.token.fingerprint==scannedFP && user.token.securityclearance >= requiredsecurity ==> valid && !alarmState && user.token.valid && doorState;
+		ensures user.token.fingerprint==scannedFP && user.token.securityclearance < requiredsecurity ==> !valid && alarmState && !doorState && user.token.valid;
 		{
  			var token := user.token;
-			if (token.valid) {
 				if (token.fingerprint == scannedFP) {
 					if (token.securityclearance >= requiredsecurity) {
 						alarmState := false;
 						doorState := true;
 						valid := true;
-						return;
-					}
+					} else {
 					alarmState := true;
 					doorState := false;
-					valid := false;
-					return;   
+					valid := false;} 
 				} else {
 					user.token.valid := false;
 					alarmState := true;
 					doorState := false;
 					valid := false;
-					return;
 				}
-			}
 		}
   
 	method closeDoor()
@@ -171,6 +165,6 @@ class Test {
     
     var boolean : bool;
     boolean := doorLvL1.requestAccess(user1LvL1, 1);
-    assert boolean == true;
+    assert boolean;
 	}
 }
