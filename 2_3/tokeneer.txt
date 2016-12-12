@@ -133,8 +133,23 @@ class Test {
 		var user1LvL1 := ERS.createUser(1,1);
 		var user2LvL2 := ERS.createUser(2,2);
 		var user3LvL3 := ERS.createUser(3,3);
+		
 		assert user1LvL1.fingerprint in ERS.enrolledUsers;
+		assert user1LvL1.token.valid == true;
+		assert user1LvL1.token.fingerprint == 1;
+		assert user1LvL1.token.securityclearance == 1;
+		assert user1LvL1.fingerprint == 1;
+		
 		assert user2LvL2.fingerprint in ERS.enrolledUsers;
+		assert user2LvL2.token.valid == true;
+		assert user2LvL2.token.fingerprint == 2;
+		assert user2LvL2.token.securityclearance == 2;
+		assert user2LvL2.fingerprint == 2;
+		
 		assert user3LvL3.fingerprint in ERS.enrolledUsers;
+		assert user3LvL3.token.valid == true;
+		assert user3LvL3.token.fingerprint == 3;
+		assert user3LvL3.token.securityclearance == 3;
+		assert user3LvL3.fingerprint == 3;
 	}
- }
+}
