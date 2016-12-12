@@ -84,6 +84,13 @@ public class LLHashTableTestSuite {
 			new LLHashTableAction[]{ put(1,1)});
 	
 	/**
+	* Testing that put(Ka,Va), put(Kb, Vb), get(Kb) <==> put(Kb, Vb), put(Ka,Va), output(Kb) iff (Ka != Kb) && (Va != Vb) 
+	*/
+	static final Property<LLHashTableAction> get = new Property<>("get", true, true, 
+			new LLHashTableAction[]{ put(1,1), put(2,2), get(2)}, 
+			new LLHashTableAction[]{ put(2,2), put(1,1), output(2)});
+	
+	/**
 	* Testing that put(Ka,Va), get(Ka) <==> put(Ka,Va), output(Ka)
 	*/
 	static final Property<LLHashTableAction> findZ = new Property<>("findZ", true, true, 
@@ -92,7 +99,7 @@ public class LLHashTableTestSuite {
 
 	// Java generic and arrays = headache
 	static final Object[] allPropertiesObjects = new Object[]
-			{ commutePut, put, removeUnmodified, removeModified, addDuplicates, findZ  };
+			{ commutePut, put, removeUnmodified, removeModified, addDuplicates, get, findZ  };
 	
 	static final Property<LLHashTableAction>[] allProperties;
 	
