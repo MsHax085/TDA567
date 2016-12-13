@@ -1,4 +1,4 @@
-class Token{
+ class Token{
 	var fingerprint : int;
 	var securityclearance : int;
 	var valid : bool;
@@ -125,6 +125,8 @@ class User{
 class Test {
 	method main()
 	{
+    //Initialize variables
+    var boolean : bool;
 		var ERS := new EnrollmentStation.init();
 		var user1LvL1 := ERS.createUser(1,1);
 		var user2LvL2 := ERS.createUser(2,2);
@@ -133,38 +135,115 @@ class Test {
 		var doorLvL2 := new IDStation.init(2);
     var doorLvL3 := new IDStation.init(3);
     
+    //Assert that user with securityClearance = 1 is enrolled and has correct values
 		assert user1LvL1.fingerprint in ERS.enrolledUsers;
-		assert user1LvL1.token.valid == true;
+		assert user1LvL1.token.valid;
 		assert user1LvL1.token.fingerprint == 1;
 		assert user1LvL1.token.securityclearance == 1;
 		assert user1LvL1.fingerprint == 1;
 		
+    //Assert that user with securityClearance = 2 is enrolled and has correct values
 		assert user2LvL2.fingerprint in ERS.enrolledUsers;
-		assert user2LvL2.token.valid == true;
+		assert user2LvL2.token.valid;
 		assert user2LvL2.token.fingerprint == 2;
 		assert user2LvL2.token.securityclearance == 2;
 		assert user2LvL2.fingerprint == 2;
-		
+    
+		//Assert that user with securityClearance = 3 is enrolled and has correct values
 		assert user3LvL3.fingerprint in ERS.enrolledUsers;
-		assert user3LvL3.token.valid == true;
+		assert user3LvL3.token.valid;
 		assert user3LvL3.token.fingerprint == 3;
 		assert user3LvL3.token.securityclearance == 3;
 		assert user3LvL3.fingerprint == 3;
     
+    //Assert that door with requiredSecurtiy = 1 is initialized correctly
     assert doorLvL1.requiredsecurity == 1;
-    assert doorLvL1.alarmState == false;
-    assert doorLvL1.doorState == false;
+    assert !doorLvL1.alarmState;
+    assert !doorLvL1.doorState;
     
+    //Assert that door with requiredSecurtiy = 2 is initialized correctly
     assert doorLvL2.requiredsecurity == 2;
-    assert doorLvL2.alarmState == false;
-    assert doorLvL2.doorState == false;
+    assert !doorLvL2.alarmState;
+    assert !doorLvL2.doorState;
     
+    //Assert that door with requiredSecurtiy = 3 is initialized correctly
     assert doorLvL3.requiredsecurity == 3;
-    assert doorLvL3.alarmState == false;
-    assert doorLvL3.doorState == false;
+    assert !doorLvL3.alarmState;
+    assert !doorLvL3.doorState;
     
-    var boolean : bool;
+    //Assert that user with securityClearance = 1 can pass through door with requiredSecurity = 1
     boolean := doorLvL1.requestAccess(user1LvL1, 1);
     assert boolean;
+    assert doorLvL1.doorState;
+    assert !doorLvL1.alarmState;
+    doorLvL1.closeDoor();
+    assert !doorLvL1.doorState;
+    
+    //Assert that user with securityClearance = 2 can pass through door with requiredSecurity = 2
+    boolean := doorLvL2.requestAccess(user2LvL2, 2);
+    assert boolean;
+    assert doorLvL2.doorState;
+    assert !doorLvL2.alarmState;
+    doorLvL2.closeDoor();
+    assert !doorLvL2.doorState;
+    
+    //Assert that user with securityClearance = 3 can pass through door with requiredSecurity = 3
+    boolean := doorLvL3.requestAccess(user3LvL3, 3);
+    assert boolean;
+    assert doorLvL3.doorState;
+    assert !doorLvL3.alarmState;
+    doorLvL3.closeDoor();
+    assert !doorLvL3.doorState;
+    
+    //Assert that user with securityClearance = 3 can pass through door with requiredSecurity = 1
+    boolean := doorLvL1.requestAccess(user3LvL3, 3);
+    assert boolean;
+    assert doorLvL1.doorState;
+    assert !doorLvL1.alarmState;
+    doorLvL1.closeDoor();
+    assert !doorLvL3.doorState;
+    
+    //Assert that user with securityClearance = 1 can't pass through door with requiredSecurity = 2
+    boolean := doorLvL2.requestAccess(user1LvL1, 1);
+    assert !boolean;
+    assert !doorLvL2.doorState;
+    assert doorLvL2.alarmState;
+    assert user1LvL1.token.valid;
+    
+    //Assert that user with securityClearance = 1 can't pass through door with requiredSecurity = 3
+    boolean := doorLvL3.requestAccess(user1LvL1, 1);
+    assert !boolean;
+    assert !doorLvL3.doorState;
+    assert doorLvL3.alarmState;
+    assert user1LvL1.token.valid;
+    
+    //Assert that user with securityClearance = 2 can't pass through door with requiredSecurity = 3
+    boolean := doorLvL3.requestAccess(user2LvL2, 2);
+    assert !boolean;
+    assert !doorLvL2.doorState;
+    assert doorLvL2.alarmState;
+    assert user2LvL2.token.valid;
+    
+    //Assert that user with other user's token can't pass through door with requiredSecurity = 1
+    boolean := doorLvL1.requestAccess(user1LvL1, 2);
+    assert !boolean;
+    assert !doorLvL1.doorState;
+    assert doorLvL1.alarmState;
+    assert !user1LvL1.token.valid;
+    
+    //Assert that user with other user's token can't pass through door with requiredSecurity = 2
+    boolean := doorLvL2.requestAccess(user2LvL2, 3);
+    assert !boolean;
+    assert !doorLvL2.doorState;
+    assert doorLvL2.alarmState;
+    assert !user2LvL2.token.valid;
+    
+    //Assert that user with other user's token can't pass through door with requiredSecurity = 3
+    boolean := doorLvL3.requestAccess(user3LvL3, 1);
+    assert !boolean;
+    assert !doorLvL3.doorState;
+    assert doorLvL3.alarmState;
+    assert !user3LvL3.token.valid;
 	}
 }
+ 
