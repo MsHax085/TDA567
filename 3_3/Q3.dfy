@@ -55,7 +55,7 @@ I =		(n >= 0) &&
 		
 wp(S1, while(0 < n), S);
 
-1. Prove wp(S1, I)
+1. Prove wp(S1, I) - I holds in S1
 
 wp (res := 0; if (n0 >= 0) then (n := n0; m := m0) else (n := -n0; m := -m0); I)
 wp (res := 0; (n0 >= 0 ==> wp(n := n0; m := m0; I)) && (n0 < 0 ==> wp(n := -n0; m := -m0, I)));
@@ -99,4 +99,25 @@ wp (res := 0;
 	
 Thus true.
 
-2. Prove wp(S, I)
+2. Prove wp(S, I) - I holds in S
+
+wp (res := res + m; n := n - 1; I);
+wp (res := res + m; wp(n := n - 1; I));
+wp (res := res + m;
+	wp (n := n - 1;
+	(n >= 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m))));
+
+(n - 1 >= 0 && (n0 >= 0 ==> (res + m) == (n0 - (n - 1)) * m) && (n0 < 0 ==> (res + m) == (-n0 - (n - 1)) * m));
+(n >= 1 && (n0 >= 0 ==> (res + m) == (n0 - n + 1) * m) && (n0 < 0 ==> (res + m) == (-n0 - n + 1) * m));
+(n >= 1 && (n0 >= 0 ==> (res + m) == (n0 - n) * m + m) && (n0 < 0 ==> (res + m) == (-n0 - n) * m + m));
+(n > 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m));
+
+I && (loop condition) = I && (0 < n)
+(n >= 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m)) && (0 < n);
+(n >= 0) && (0 < n) = 0 < n;
+(n > 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m));
+
+wp(S, I) <==> I && (loop condition);
+
+Thus:
+I && (loop condition) ==> wp (S, I);
