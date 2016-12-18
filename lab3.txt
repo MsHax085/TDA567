@@ -1,0 +1,250 @@
+-------------------------------------1-----------------------------------
+method Abs(x : int) returns (y : int) 
+  ensures 0 <= y;
+  ensures 0 <= x ==> y == x;
+  ensures x < 0 ==> y == -x;
+{
+  if (x < 0)
+   {y := -x;}
+  else
+   {y := x;}
+}
+
+Postcondition R = (0 <= y) && (0 <= x ==> y == x) && (x < 0 ==> y == -x)
+
+Setup:
+wp(if x < 0 then y := -x else y := x, R)
+
+By Conditional rule:
+(x < 0) ==> wp(y := -x, R) &&
+!(x < 0) ==> wp(y := x, R)
+
+By Assignment Rule:
+(x < 0) ==> R[y -> -x] 
+&&
+!(x < 0) ==> R[y -> x]
+=
+(x < 0) ==> (0 <= -x) && (0 <= x ==> -x == x) && (x < 0 ==> -x == -x)
+&&
+x >= 0 ==>  (0 <= x) && (0 <= x ==> x == x) && (x < 0 ==> x == -x)
+=
+true
+
+because:
+----------------------------------------
+Clonsusion of implication is always true for all values of x in premise,
+thus the implication is a tautology
+(x < 0) ==> (0 <= -x) && (0 <= x ==> -x == x) && (x < 0 ==> -x == -x)
+----------------------------------------
+&&
+----------------------------------------
+Clonsusion of implication is always true for a true premise and always false for a false premise,
+thus the implication is a tautology
+x >= 0 ==>  (0 <= x) && (0 <= x ==> x == x) && (x < 0 ==> x == -x)
+----------------------------------------
+
+
+
+
+
+-------------------------------------2-----------------------------------
+---------------2b-----------------------
+method Q2(x : int, y : int) returns (big : int, small : int) 
+  ensures big > small;
+{
+  if (x > y)
+   {big, small := x, y;}
+  else
+   {big, small := y, x;}
+}
+----------------------------------------
+R = big > small
+
+wp(IF x > y THEN big := x; small := y ELSE big := y; small := x, R)
+
+By Conditional Rule:
+(x > y) ==> wp(big := x; small := y, R)
+&&
+!(x > y) ==> wp(big := y; small :=x, R)
+
+By Sequential Rule:
+(x > y) ==> wp(big := x, wp(small := y, R))
+&&
+(x <= y) ==> wp(big := y, wp(small :=x, R))
+
+By Assignment Rule:
+(x > y) ==> wp(big := x, R[small -> y])
+&&
+(x <= y) ==> wp(big := y, R[small -> x])
+
+Simplification:
+(x > y) ==> wp(big := x, big > y)
+&&
+(x <= y) ==> wp(big := y, big > x)
+
+By Assignment Rule and simplification:
+(x > y) ==>  x > y, 	Trivially true
+&&
+(x <= y) ==> y > x,		False when x == y
+= 
+false
+
+The second implication will always be true aslong as x != y
+Thus adding requires x != y to the dafny specification will
+make it complete. 
+
+method Q2(x : int, y : int) returns (big : int, small : int) 
+  requires x != y;
+  ensures big > small;
+{
+  if (x > y)
+   {big, small := x, y;}
+  else
+   {big, small := y, x;}
+}
+
+
+
+
+
+-------------------------------------4-----------------------------------
+---------------4b-----------------------
+
+method ComputeFact(n : nat) returns (res : nat)
+  requires n > 0;
+  ensures res == fact(n);
+ {
+  res := 1;
+  var i := 2;
+  while (i <= n) 
+  invariant res == fact(i-1) && n >= i -1;   
+  decreases n-i;             
+  {
+    res := res * i;
+    i := i + 1;
+  }
+ }
+ 
+ Pre	n > 0
+ Post 	res = fact(n)
+ E		i <= n
+ I		res == fact(i-1) && n >= i-1
+ D 		n-i
+ S		res := 1; i := 2;
+ S2		res := res * i; i := i + 1;
+ Q		res == fact(n)
+
+ Only proving correctness of loop:
+ wp(while E I D S2, Q)=
+	I 
+	&& (E && I ==> wp(S2, I))
+	&& (!E && I ==> Q)
+	
+	&& (I ==> D >= 0)
+	&& (E && I ==> wp(tmp := D; S2, tmp > D)))
+	
+	-----------------(E && I ==> wp(S2, I))-----------------------
+	
+	(E && I ==> wp(S2, I)) = 
+	
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(res := res * i; i := i + 1, res == fact(i-1) && n >= i-1)
+	
+	By Sequential Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(res := res * i; wp(i := i + 1, res == fact(i-1) && n >= i-1))
+	
+	By Assignment Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(res := res * i; res == fact((i+1)-1) && n >= (i+1)-1)
+	
+	By Assignment Rule && Simplification:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(res := res * i, res == fact(i) && n >= i)
+	=
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	res * i == fact(i) && n >= i
+	=
+	i <= n && res == fact(i-1) ==>
+	res * i == fact(i) && n >= i
+	=
+	res == fact(i-1) ==> res * i == fact(i)
+	
+	true since: 
+		fact(i-1) * i == fact(i)
+	
+	-----------------(!E && I ==> Q)-----------------------
+
+	(!E && I ==> Q) =
+	
+	!(i <= n) && res == fact(i-1) && n >= i-1 ==>
+	res == fact(n)
+	=
+	i > n && res == fact(i-1) && n >= i-1 ==>
+	res == fact(n)
+	=
+	i > n && res == fact(i-1) && i <= n+1 ==>
+	res == fact(n)
+	=
+	res == fact(i-1) && n == i-1 ==>
+	res == fact(n)
+	= 
+	True
+	
+	-----------------(I ==> D >= 0)-----------------------
+	
+	res == fact(i-1) && n >= i-1 ==>
+	n-i >= 0
+	=
+	?
+	
+	-----------------(E && I ==> wp(tmp := D; S2, tmp > D)))-----------------------
+	
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(tmp := n-i; res := res * i; i := i + 1, tmp > n-i))
+	
+	By Sequential Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(tmp := n-i; res := res * i; wp(i := i + 1, tmp > n -i))
+	
+	By Sequential Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(tmp := n-i; wp(res := res * i, wp(i := i + 1, tmp > n -i)))
+	
+	By Assignment Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(tmp := n-i; wp(res := res * i, tmp > n -(i+1)))
+	
+	By Assignment Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	wp(tmp := n-i, tmp > n -i-1)
+	
+	By Assignment Rule:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	n-i > n-i-1
+	
+	Simplification:
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	n-i > n-i-1
+	=
+	i <= n && res == fact(i-1) && n >= i-1 ==>
+	n > n-1
+	
+	Trivially true since conclusion of implication is true.
+	
+	------------------(Pre ==> wp(S,wp(while E I D S2, Q)))----------------------
+	
+	n > 0 ==> wp(res := 1; i := 2, res == fact(i-1) && n >= i-1 )
+	
+	By Sequential Rule:
+	n > 0 ==> wp(res := 1, wp(i := 2, res == fact(i-1) && n >= i-1))
+	
+	By Assignment Rule:
+	n > 0 ==> wp(res := 1, res == fact(2-1) && n >= 2-1)
+	
+	By Assignment Rule:
+	n > 0 ==> 1 == fact(2-1) && n >= 2 - 1
+	=
+	n > 0 ==> n >= 1
+	
+	Trivially true
