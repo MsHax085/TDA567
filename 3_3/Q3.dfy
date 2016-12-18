@@ -121,3 +121,32 @@ wp(S, I) <==> I && (loop condition);
 
 Thus:
 I && (loop condition) ==> wp (S, I);
+
+3. Prove loop condition
+
+I && (loop condition) ==> (n decreases) > 0
+
+True since loop condition n > 0
+
+4. Decreasing n
+
+wp (n2 := n; res := res + m; n := n - 1; n2 > n);
+wp (n2 := n; wp(res := res + m; wp(n := n - 1; n2 > n))=;
+wp (n2 := n; wp(res := res + m; n2 > n - 1));
+wp (n2 := n; n2 > n - 1);
+(n > n - 1);
+
+Always true.
+
+5. Ensure (res == n0 * m0) holds
+
+I && !(loop condition) ==> (n >= 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m)) && (0 >= n);
+I && !(loop condition) ==> (n == 0 && (n0 >= 0 ==> res == (n0) * m) && (n0 < 0 ==> res == (-n0) * m));
+
+(n == 0 && (n0 >= 0 ==> res == (n0 - n) * m) && (n0 < 0 ==> res == (-n0 - n) * m)) ==> (res == n0 * m0)
+
+If n0 >= 0 holds, then m must be m0 and res therefore must be n0 * m0
+If n0 < 0 holds, then m must me -m0 and res therefore must be n0 * m0
+
+Because (n0 >= 0) OR (n0 < 0) == TRUE
+This must hold: I && !(loop condition) ==> (res == n0 * m0)
