@@ -195,8 +195,12 @@ method ComputeFact(n : nat) returns (res : nat)
 	
 	res == fact(i-1) && n >= i-1 ==>
 	n-i >= 0
+	= {Q -> P <-> !Q || P}
+	!(res == fact(i-1) && n >= i-1) || (n >= i)
+	={De Morgans law !(A&&B) <-> !A || ! B}
+	!(res== fact(i-1)) || !(n >=i-1) || (n >= i)
 	=
-	?
+	True?
 	
 	-----------------(E && I ==> wp(tmp := D; S2, tmp > D)))-----------------------
 	
