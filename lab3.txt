@@ -296,16 +296,25 @@ method ComputeFact(n : nat) returns (res : nat)
 	= 
 	True
 	
-	-----------------(I ==> D >= 0)-----------------------
+	-----------------(I && E ==> D >= 0)-----------------------
 	
-	res == fact(i-1) && n >= i-1 ==>
-	n-i >= 0
-	= {Q -> P <-> !Q || P}
-	!(res == fact(i-1) && n >= i-1) || (n >= i)
-	={De Morgans law !(A&&B) <-> !A || ! B}
-	!(res== fact(i-1)) || !(n >=i-1) || (n >= i)
-	=
-	True?
+	(res == fact(i - 1) && n >= i - 1) && (i <= n) ==> n - i >= 0
+
+	(res == fact(i - 1) && n + 1 >= i) && (i <= n) ==> n >= i
+
+	res = fact(i - 1) && (i <= n) ==> n >= i
+
+	Simplify by removing "res = fact(i - 1)", irrelevant.
+
+	(i <= n) ==> (n >= i)
+
+	(i <= n) ==> (i <= n)
+
+	(i <= n) <==> (i <= n)
+
+	True <==> True
+
+	Thus "I && E ==> D >= 0" must also be true.
 	
 	-----------------(E && I ==> wp(tmp := D; S2, tmp > D)))-----------------------
 	
